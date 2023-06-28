@@ -1,23 +1,7 @@
 ---
 # tasks file for krb5
- - name: Setting configuration values
-   ansible.builtin.set_fact:
-     krb5_config:
-             includeddir: "{{ includeddir | default(_includeddir)}}"
-             libdefaults: "{{ libdefaults | default(_libdefaults)}}"
-             login: "{{ login | default(_login)}}"
-             realms: "{{ realms | default([]) }}"
-             domain_realm: "{{ domain_realm | default([]) }}"
-             capaths: "{{ capaths | default([]) }}"
-             plugins: "{{ plugins | default([]) }}"
-             dbdefaults: "{{ dbdefaults | default(_dbdefaults)}}"
-             dbmodules: "{{ dbmodules | default(_dbmodules)}}"
-   tags:
-     - never
-     - client
-     - server
 
- - name: Install required packages for client
+ - name: Import OS specific packages variables
    ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
    vars:
      params:
@@ -45,6 +29,23 @@
      state: latest
    tags: 
      - never
+     - server
+
+ - name: Setting configuration values
+   ansible.builtin.set_fact:
+     krb5_config:
+             includeddir: "{{ includeddir | default(_includeddir)}}"
+             libdefaults: "{{ libdefaults | default(_libdefaults)}}"
+             login: "{{ login | default(_login)}}"
+             realms: "{{ realms | default([]) }}"
+             domain_realm: "{{ domain_realm | default([]) }}"
+             capaths: "{{ capaths | default([]) }}"
+             plugins: "{{ plugins | default([]) }}"
+             dbdefaults: "{{ dbdefaults | default(_dbdefaults)}}"
+             dbmodules: "{{ dbmodules | default(_dbmodules)}}"
+   tags:
+     - never
+     - client
      - server
 
  - name: Generating krb5 configuration
