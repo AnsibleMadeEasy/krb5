@@ -121,6 +121,16 @@ Including an example of how to use the role and define the overrides in line.:
          - role: krb5
            tags: client
            vars:
+
+            default_realm: 'MY.DOMAIN.ORG'
+            dns_lookup_realm: false
+            dns_lookup_kdc: true
+            rdns: false
+            ticket_lifetime: '24h'
+            forwardable: true
+            udp_preference_limit: 0
+            default_ccache_name: KEYRING:persistent:%{uid}
+
             realms:
                MYDOMAIN.ORG:
                  kdc: 'my_domain_controller.org:88'
@@ -139,6 +149,13 @@ Including an example of how to use the role and define the overrides in line.:
                  kdc: 'ad.mydomain.org:88'
                  master_kdc: 'ad.mydomain.org:88'
                  kpasswd_server: 'ad.mydomain.org:464'
+
+            domain_realm:
+              .my.domain.org: 'MY.DOMAIN.ORG'
+              my.domain.org: 'MY.DOMAIN.ORG'
+              ids199ipa.unity.ncsu.edu: 'MY.DOMAIN.ORG'
+              .my_other.domain.org: 'MY.DOMAIN.ORG'
+              my_other.domain.org: 'MY.DOMAIN.ORG'
 
             dbmodules:
               MY.DOMAIN.ORG:
@@ -197,6 +214,11 @@ Example Output File
         kpasswd_server = ad.mydomain.org:464
       }
     [domain_realm]
+      .my.domain.org = MY.DOMAIN.ORG
+      my.domain.org = MY.DOMAIN.ORG
+      ids199ipa.unity.ncsu.edu = MY.DOMAIN.ORG
+      .my_other.domain.org = MY.DOMAIN.ORG
+      my_other.domain.org = MY.DOMAIN.ORG
     [capaths]
     [plugins]
       certauth = {
