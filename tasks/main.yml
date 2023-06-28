@@ -1,0 +1,60 @@
+---
+# tasks file for krb5
+ - name: Setting configuration values
+   ansible.builtin.set_fact:
+     krb5_config:
+             includeddir: "{{ includeddir | default(_includeddir)}}"
+             libdefaults: "{{ libdefaults | default(_libdefaults)}}"
+             login: "{{ login | default(_login)}}"
+             realms: "{{ realms | default([]) }}"
+             domain_realm: "{{ domain_realm | default([]) }}"
+             capaths: "{{ capaths | default([]) }}"
+             plugins: "{{ plugins | default([]) }}"
+             dbdefaults: "{{ dbdefaults | default(_dbdefaults)}}"
+             dbmodules: "{{ dbmodules | default(_dbmodules)}}"
+   tags:
+     - never
+     - client
+     - server
+
+ - name: Install required packages for client
+   ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+   vars:
+     params:
+       files: 
+         - "{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.yml"
+         - "{{ ansible_distribution }}.yml"
+         - "{{ ansible_os_family }}.yml"
+       paths:
+         - "vars"
+   tags:
+     - never
+     - client
+
+ - name: Install required packages for client
+   ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+   vars:
+     params:
+       files: 
+         - "{{ ansible_distribution }}_{{ ansible_distribution_major_version }}_server.yml"
+         - "{{ ansible_distribution }}_server.yml"
+         - "{{ ansible_os_family }}_server.yml"
+       paths:
+         - "vars"
+   tags:
+     - never
+     - server
+
+
+ - name: Generating krb5 configuration
+   ansible.builtin.template:
+     src: krb5.conf.j2
+     dest: /etc/krb5.conf
+     user: root
+     group: root
+     mode: '0644'
+     backup: yes
+   tags:
+     - never
+     - server
+     - client

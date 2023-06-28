@@ -1,0 +1,4 @@
+---
+_includeddir:
+  - '/etc/krb5.conf.d/'
+  - '/var/lib/sss/pubconf/krb5.include.d/'

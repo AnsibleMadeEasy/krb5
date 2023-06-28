@@ -1,0 +1,29 @@
+;{{ ansible_managed }}
+              
+{% for module in krb5_config.keys() %}
+{% if module == 'includeddir' %}
+{% for dir_path in krb5_config[module] %}
+includedir {{ dir_path }}
+{% endfor %}
+{% else %}
+[{{module}}]
+{% for directive in krb5_config[module] %}
+{% if krb5_config[module][directive] is mapping %}
+  {{ directive }} = {
+{% for subdirective in krb5_config[module][directive].keys() %}
+{%if krb5_config[module][directive][subdirective] is mapping %}
+{% for option in krb5_config[module][directive][subdirective].keys() %}
+    {{ subdirective }} = {{ krb5_config[module][directive][subdirective][option] }}
+{% endfor %}
+{%else%}
+    {{ subdirective }} = {{ krb5_config[module][directive][subdirective] }}
+{% endif %}
+{% endfor %}
+  }
+{% else %}
+  {{ directive }} = {{ krb5_config[module][directive] }}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% endfor %}

@@ -1,0 +1,12 @@
+---
+_dbmodules:
+  database_name: "{{ database_name | default(omit) }}"
+  db_library: "{{ db_library | default(omit) }}"
+  disable_last_success: "{{ disable_last_success| default(false) }}"
+  disable_lockout: "{{ disable_lockout| default(false) }}"
+  ldap_kerberos_container_dn: "{{ ldap_kerberos_container_dn | default(omit) }}"
+  ldap_kdc_dn: "{{ ldap_kdc_dn | default(omit) }}"
+  ldap_kadmind_dn: "{{ ldap_kadmind_dn | default(omit) }}"
+  ldap_service_password_file: "{{ ldap_service_password_file | default(omit) }}"
+  ldap_servers: "{{ ldap_servers|default(omit) }}"
+  ldap_conns_per_server: "{{ ldap_conns_per_server | default('5') }}"

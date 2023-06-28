@@ -1,0 +1,6 @@
+---
+_login:
+  krb5_get_tickets: "{{ krb5_get_tickets | default(true) }}"
+  krb_run_aklog: "{{ krb_run_aklog | default(false) }}"
+  aklog_path: "{{ aklog_path | default('$(prefix)/bin/aklog') }}"
+  accept_passwd: "{{ accept_passwd | default(false) }}"
