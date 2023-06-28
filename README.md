@@ -150,5 +150,4 @@ BSD
 Author Information
 ------------------
 David Lewellyn  
-CSI Systems Adminstrator  
-dlewell@ncsu.edu
+Systems Adminstrator  
