@@ -1,0 +1,8 @@
+---
+ required_client_packages:
+   - krb5-workstation 
+   - krb5-libs
+
+ required_server_packages:
+   - krb5-server
+   - krb5-libs 

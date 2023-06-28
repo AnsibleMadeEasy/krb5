@@ -22,7 +22,6 @@
    vars:
      params:
        files: 
-         - "{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.yml"
          - "{{ ansible_distribution }}.yml"
          - "{{ ansible_os_family }}.yml"
        paths:
@@ -30,21 +29,23 @@
    tags:
      - never
      - client
-
- - name: Install required packages for client
-   ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
-   vars:
-     params:
-       files: 
-         - "{{ ansible_distribution }}_{{ ansible_distribution_major_version }}_server.yml"
-         - "{{ ansible_distribution }}_server.yml"
-         - "{{ ansible_os_family }}_server.yml"
-       paths:
-         - "vars"
-   tags:
-     - never
      - server
 
+ - name: Install required packages for Kerberos client
+   ansible.builtin.package:
+     name: "{{  required_client_packages }}"
+     state: latest
+   tags:
+     - never
+     - client 
+
+ - name: Install required packages for Kerberos servers
+   ansible.builtin.package:
+     name: "{{  required_server_packages }}"
+     state: latest
+   tags: 
+     - never
+     - server
 
  - name: Generating krb5 configuration
    ansible.builtin.template:
