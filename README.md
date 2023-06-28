@@ -140,7 +140,75 @@ Including an example of how to use the role and define the overrides in line.:
                  master_kdc: 'ad.mydomain.org:88'
                  kpasswd_server: 'ad.mydomain.org:464'
 
+            dbmodules:
+              MY.DOMAIN.ORG:
+                db_library: 'ipadb.so'
+            
+            plugins:
+              certauth:
+                module: 'ipakdb:kdb/ipadb.so'
+                enable_only: 'ipakdb'
+```
 
+Example Output File
+--------------
+```
+    includedir /etc/krb5.conf.d/
+    includedir /var/lib/sss/pubconf/krb5.include.d/
+    [libdefaults]
+      default_keytab_name = /etc/krb5.keytab
+      default_realm = MY.DOMAIN.ORG
+      allow_weak_crypto = False
+      k5login_authoritative = True
+      kdc_timesync = True
+      preferred_preauth_types = 17, 16, 15, 14
+      dns_lookup_kdc = True
+      dns_lookup_realm = False
+      realm_try_domains = False
+      udp_preference_limit = 0
+      verify_ap_req_nofail = False
+      ticket_lifetime = 24h
+      renew_lifetime = 0
+      noaddresses = True
+      forwardable = True
+      proxiable = False
+      rdns = False
+      plugin_base_dir = krb5/plugins
+    [login]
+      krb5_get_tickets = True
+      krb_run_aklog = False
+      aklog_path = $(prefix)/bin/aklog
+      accept_passwd = False
+    [realms]
+      MYDOMAIN.ORG = {
+        kdc = my_domain_controller.org:88
+        master_kdc = my_domain_controller.org:88
+        kpasswd_server = my_domain_controller.org:464
+        admin_server = my_domain_controller.org:749
+        default_domain = mydomain.org
+        pkinit_anchors = FILE:/var/lib/ipa-client/pki/kdc-ca-bundle.pem
+        pkinit_pool = FILE:/var/lib/ipa-client/pki/ca-bundle.pem
+        auth_to_local = RULE:[1:$1@$0](^.*@AD.MYDOMAIN.ORG$)s/@AD.MYDOMAIN.ORG/@AD.MYDOMAIN.ORG/
+        auth_to_local = DEFAULT
+      }
+      AD.MYDOMAIN.ORG = {
+        kdc = ad.mydomain.org:88
+        master_kdc = ad.mydomain.org:88
+        kpasswd_server = ad.mydomain.org:464
+      }
+    [domain_realm]
+    [capaths]
+    [plugins]
+      certauth = {
+        module = ipakdb:kdb/ipadb.so
+        enable_only = ipakdb
+      }
+    [dbdefaults]
+      ldap_conns_per_server = 5
+    [dbmodules]
+      MY.DOMAIN.ORG = {
+        db_library = ipadb.so
+      }
 ```
 License
 -------
