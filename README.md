@@ -153,7 +153,6 @@ Including an example of how to use the role and define the overrides in line.:
             domain_realm:
               .my.domain.org: 'MY.DOMAIN.ORG'
               my.domain.org: 'MY.DOMAIN.ORG'
-              ids199ipa.unity.ncsu.edu: 'MY.DOMAIN.ORG'
               .my_other.domain.org: 'MY.DOMAIN.ORG'
               my_other.domain.org: 'MY.DOMAIN.ORG'
 
@@ -216,7 +215,6 @@ Example Output File
     [domain_realm]
       .my.domain.org = MY.DOMAIN.ORG
       my.domain.org = MY.DOMAIN.ORG
-      ids199ipa.unity.ncsu.edu = MY.DOMAIN.ORG
       .my_other.domain.org = MY.DOMAIN.ORG
       my_other.domain.org = MY.DOMAIN.ORG
     [capaths]
